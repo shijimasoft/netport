@@ -6,15 +6,17 @@
 
 *A GUI address port checker written in Rust*
 
-<p align="center"><img src="https://i.ibb.co/9nt03MB/netport.png" alt="netport"></p>
+<p align="center"><img src="https://i.ibb.co/SxdTX5j/netport.png"></p>
 
 ## Install 📦
----
-*Compiled binaries coming soon*
+
+*Windows and macOS binary files can be found in [Release](https://github.com/shijimasoft/netport/releases) section*
 
 <br>
 
-Windows and macOS don’t need dependencies.
+<u> **Compile from Source Code** </u>
+
+No external dependencies are required on Windows and macOS.
 
 on Linux you should install:
 
@@ -26,6 +28,6 @@ on Linux you should install:
 
 <br>
 
-<u> **Build binary with Cargo** </u>
+*Build binary with Rust compiler:*
 
 `cargo build --release`

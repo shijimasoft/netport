@@ -1,3 +1,4 @@
+use std::thread;
 use fltk::{app, prelude::*, window::Window, frame::Frame, enums::FrameType, input::Input, button::Button};
 
 fn main() {
@@ -43,25 +44,39 @@ fn main() {
     let mut status_panel = Frame::new(125,90,160,70,"");
     status_panel.set_frame(FrameType::GtkDownFrame);
 
-    let mut status_label = Frame::new(168, 98, 70, 18, "Status");
+    let mut status_label = Frame::new(158, 97, 90, 14, "Status");
     let mut address_label = Frame::new(140, 102, 130, 50, "");
 
-    check_btn.set_callback(move |check_btn| {
-        check_btn.deactivate();
-
-        let ip_port: &str = &format!("{}.{}.{}.{}:{}", first_txt.value(), second_txt.value(), third_txt.value(), fourth_txt.value(), port_txt.value());
+    check_btn.set_callback(move |_| {
+        let bytes: [String;4] = [first_txt.value(), second_txt.value(), third_txt.value(), fourth_txt.value()];
+        let mut abort: bool = false;
         
-        if port_check::is_port_reachable(ip_port) 
-            {status_label.set_label("Status: OPEN")} 
-        else 
-            {status_label.set_label("Status: CLOSED")}
+        for byte in &bytes {
+            if byte.trim().parse::<u8>().is_err() {abort = true}
+        }
+        if port_txt.value().trim().parse::<i16>().is_err() {abort = true}
         
-        address_label.set_label(ip_port);
+        if abort == false {
+            let address: String = format!("{}:{}", bytes.join("."), port_txt.value());
+            address_label.set_label(&address);
+            
+            status_label.set_label("Scanning...");
+            let mut status_label = status_label.clone();
 
-        check_btn.activate();
+            thread::spawn(move || {
+                if port_check::is_port_reachable_with_timeout(address, std::time::Duration::from_secs(8)) {
+                    status_label.set_label("Status: Open");
+                } else {
+                    status_label.set_label("Status: Closed")
+                }
+            });
+
+        } else {
+            status_label.set_label("");
+            address_label.set_label("Invalid IP/Port")
+        }
     });
 
-    window.end();
     window.show();
     netport.run().unwrap();
 }
