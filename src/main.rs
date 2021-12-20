@@ -1,4 +1,6 @@
 use std::thread;
+use std::net::{SocketAddr, TcpStream};
+use std::time::Duration;
 use fltk::{app, prelude::*, window::Window, frame::Frame, enums::FrameType, input::Input, button::Button};
 
 fn main() {
@@ -33,12 +35,12 @@ fn main() {
     let mut port_panel = Frame::new(15,90,100,70,"");
     port_panel.set_frame(FrameType::GtkDownFrame);
 
-    let _port_label = Frame::new(25, 107, 30, 8, "Port:");
+    let _port_label = Frame::new(24, 107, 30, 8, "Port:");
 
-    let mut port_txt = Input::new(60, 98, 42, 24, "");
-    port_txt.set_maximum_size(4);
+    let mut port_txt = Input::new(57, 98, 48, 24, "");
+    port_txt.set_maximum_size(5);
 
-    let mut check_btn = Button::new(25, 128, 77, 21, "Check");
+    let mut check_btn = Button::new(24, 128, 81, 21, "Check");
     
     /* STATUS PANEL */
     let mut status_panel = Frame::new(125,90,160,70,"");
@@ -49,26 +51,22 @@ fn main() {
 
     check_btn.set_callback(move |_| {
         let bytes: [String;4] = [first_txt.value(), second_txt.value(), third_txt.value(), fourth_txt.value()];
-        let mut abort: bool = false;
-        
-        for byte in &bytes {
-            if byte.trim().parse::<u8>().is_err() {abort = true}
-        }
-        if port_txt.value().trim().parse::<i16>().is_err() {abort = true}
-        
-        if abort == false {
-            let address: String = format!("{}:{}", bytes.join("."), port_txt.value());
+        let abort: bool;
+
+        let address: String = format!("{}:{}", bytes.join("."), port_txt.value());
+        if address.parse::<SocketAddr>().is_err() {abort = true} else {abort=false}
+
+        if !abort {
             address_label.set_label(&address);
-            
             status_label.set_label("Scanning...");
+
             let mut status_label = status_label.clone();
 
             thread::spawn(move || {
-                if port_check::is_port_reachable_with_timeout(address, std::time::Duration::from_secs(8)) {
-                    status_label.set_label("Status: Open");
-                } else {
-                    status_label.set_label("Status: Closed")
-                }
+                if TcpStream::connect_timeout(&address.parse::<SocketAddr>().unwrap(), Duration::from_secs(8)).is_ok() 
+                    {status_label.set_label("Status: Open")} 
+                else 
+                    {status_label.set_label("Status: Closed")}
             });
 
         } else {
