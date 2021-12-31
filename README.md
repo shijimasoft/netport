@@ -1,5 +1,7 @@
 # NetPort
 
+
+
 ![license](https://img.shields.io/badge/license-Apache%202-green)
 ![version](https://img.shields.io/badge/version-0.3-blueviolet)
 ![win64](https://img.shields.io/badge/windows-release64-informational)
@@ -8,9 +10,9 @@
 
 *A GUI address port checker written in Rust*
 
-<center>
+<p align="center">
 <img src="https://i.ibb.co/SxdTX5j/netport.png">
-</center>
+</p>
 
 ## Install 📦
 
