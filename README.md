@@ -1,7 +1,5 @@
 # NetPort
 
-<center>
-
 ![license](https://img.shields.io/badge/license-Apache%202-green)
 ![version](https://img.shields.io/badge/version-0.3-blueviolet)
 ![win64](https://img.shields.io/badge/windows-release64-informational)
@@ -10,6 +8,7 @@
 
 *A GUI address port checker written in Rust*
 
+<center>
 <img src="https://i.ibb.co/SxdTX5j/netport.png">
 </center>
 
@@ -39,8 +38,6 @@ on *Linux* you should install:
 
 `cargo build --release`
 
-<br>
-
 ## Terminal usage ⚡️
 
 NetPort GUI can be easily started with:
@@ -51,7 +48,7 @@ NetPort GUI can be easily started with:
 
 It can also be invoked with parameters:
 
-`netport [address]` <u>Address</u> should have this format > **IP:PORT**  ( e.g. `127.0.0.1:80` )
+`netport [address]` <u>Address</u> should have this format: **IP**:**PORT**  (e.g. `127.0.0.1:80`)
 
 You can also specify the connection timeout:
 
