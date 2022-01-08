@@ -3,12 +3,43 @@
 use std::thread;
 use std::net::{SocketAddr, TcpStream};
 use std::time::Duration;
+use std::collections::HashMap;
 use fltk::{app, prelude::*, window::Window, frame::Frame, enums::FrameType, input::Input, button::Button};
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     let mut scan: bool = false;
     let mut timeout: u64 = 8;
+
+    let services = HashMap::<u32, &str>::from([
+        (21, "FTP"),
+        (990, "FTPS"),
+        (22, "SSH"),
+        (23, "Telnet"),
+        (53, "DNS"),
+        (25, "SMTP"),
+        (587, "SMTP (SSL)"),
+        (110, "POP"),
+        (995, "POP (SSL)"),
+        (143, "IMAP"),
+        (993, "IMAP (SSL)"),
+        (67, "DHCP"),
+        (123, "NTP"),
+        (80, "HTTP"),
+        (8080, "HTTP"),
+        (443, "HTTPS"),
+        (194, "IRC"),
+        (445, "SMB"),
+        (5060, "SIP"),
+        (3306, "MySQL"),
+        (5432, "PostgreSQL"),
+        (2082, "cPanel"),
+        (389, "LDAP"),
+        (636, "LDAPS"),
+        (9987, "TeamSpeak 3"),
+        (666, "Doom"),
+        (25565, "Minecraft")
+    ]);
 
     let netport = app::App::default().with_scheme(app::AppScheme::Gtk);
     let mut window = Window::default()
@@ -37,6 +68,9 @@ fn main() {
         Input::new(198, 40, 34, 24, "")
     ];
 
+    for i in 0..4 
+        {bytes_txt[i].set_maximum_size(3)}
+
     /* PORT PANEL */
     let mut port_panel = Frame::new(15,90,100,70,"");
     port_panel.set_frame(FrameType::GtkDownFrame);
@@ -52,8 +86,8 @@ fn main() {
     let mut status_panel = Frame::new(125,90,160,70,"");
     status_panel.set_frame(FrameType::GtkDownFrame);
 
-    let mut status_label = Frame::new(154, 100, 100, 14, "Status");
-    let mut address_label = Frame::new(140, 105, 130, 50, "");
+    let mut status_label = Frame::new(155, 100, 100, 14, "Status");
+    let mut address_label = Frame::new(145, 105, 130, 50, "");
 
     /* ARGS handling (Address and Timeout) */
     if args.len() >= 2 && args[1].parse::<SocketAddr>().is_ok() 
@@ -71,8 +105,11 @@ fn main() {
     if args.len() == 4 && args[2] == "-t" && args[3].parse::<u64>().is_ok() 
         {timeout = args[3].parse::<u64>().unwrap()}
 
+    window.show();
+
     /* SCAN */
     check_btn.set_callback(move |check_btn| {
+        window.set_label("NetPort");
         check_btn.deactivate();
 
         let bytes: Vec<String> = bytes_txt.iter().map(|byte_txt| byte_txt.value()).collect();
@@ -98,6 +135,10 @@ fn main() {
                 check_btn.activate();
             });
 
+            let port: u32 = port_txt.value().parse::<u32>().unwrap();
+            if services.contains_key(&port)
+                {window.set_label(&format!("NetPort - {}", services[&port]))}
+
         } else {
             status_label.set_label("");
             address_label.set_pos(139, 99);
@@ -107,6 +148,5 @@ fn main() {
     });
 
     if scan {check_btn.do_callback()}
-    window.show();
     netport.run().unwrap();
 }
