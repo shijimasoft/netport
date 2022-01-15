@@ -1,7 +1,7 @@
 # NetPort
 
 ![license](https://img.shields.io/badge/license-Apache%202-green)
-![version](https://img.shields.io/badge/version-0.4-blueviolet)
+![version](https://img.shields.io/badge/version-0.5-blueviolet)
 ![win64](https://img.shields.io/badge/windows-release64-informational)
 ![linux64](https://img.shields.io/badge/linux-release64-orange)
 ![macos64](https://img.shields.io/badge/macOS-release64-magenta)

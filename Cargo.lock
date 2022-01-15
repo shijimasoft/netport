@@ -45,7 +45,7 @@ dependencies = [
 
 [[package]]
 name = "netport"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "fltk",
  "once_cell",
