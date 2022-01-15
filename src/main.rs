@@ -1,9 +1,11 @@
 #![windows_subsystem = "windows"]
 
+mod utils;
+use utils::SERVICES;
+
 use std::thread;
 use std::net::{SocketAddr, TcpStream};
 use std::time::Duration;
-use std::collections::HashMap;
 use fltk::{app, prelude::*, window::Window, frame::Frame, enums::FrameType, input::Input, button::Button};
 
 fn main() {
@@ -11,40 +13,10 @@ fn main() {
     let mut scan: bool = false;
     let mut timeout: u64 = 8;
 
-    let services = HashMap::<u32, &str>::from([
-        (21, "FTP"),
-        (990, "FTPS"),
-        (22, "SSH"),
-        (23, "Telnet"),
-        (53, "DNS"),
-        (25, "SMTP"),
-        (587, "SMTP (SSL)"),
-        (110, "POP"),
-        (995, "POP (SSL)"),
-        (143, "IMAP"),
-        (993, "IMAP (SSL)"),
-        (67, "DHCP"),
-        (123, "NTP"),
-        (80, "HTTP"),
-        (8080, "HTTP"),
-        (443, "HTTPS"),
-        (194, "IRC"),
-        (445, "SMB"),
-        (5060, "SIP"),
-        (3306, "MySQL"),
-        (5432, "PostgreSQL"),
-        (2082, "cPanel"),
-        (389, "LDAP"),
-        (636, "LDAPS"),
-        (9987, "TeamSpeak 3"),
-        (666, "Doom"),
-        (25565, "Minecraft")
-    ]);
-
     let netport = app::App::default().with_scheme(app::AppScheme::Gtk);
     let mut window = Window::default()
         .with_size(300, 180)
-        .with_label("NetPort")
+        .with_label("NetPort v0.5")
         .center_screen();
 
     /* IP PANEL */
@@ -109,13 +81,18 @@ fn main() {
 
     /* SCAN */
     check_btn.set_callback(move |check_btn| {
-        window.set_label("NetPort");
+        window.set_label("NetPort v0.5");
         check_btn.deactivate();
 
-        let bytes: Vec<String> = bytes_txt.iter().map(|byte_txt| byte_txt.value()).collect();
+        let bytes: String = bytes_txt
+            .iter()
+            .map(|byte_txt| String::from(byte_txt.value().trim()))
+            .collect::<Vec<String>>()
+            .join(".");
+
         let abort: bool;
 
-        let address: String = format!("{}:{}", bytes.join("."), port_txt.value());
+        let address: String = format!("{}:{}", bytes, port_txt.value().trim());
         if address.parse::<SocketAddr>().is_err() {abort = true} else {abort=false}
 
         if !abort {
@@ -136,8 +113,8 @@ fn main() {
             });
 
             let port: u32 = port_txt.value().parse::<u32>().unwrap();
-            if services.contains_key(&port)
-                {window.set_label(&format!("NetPort - {}", services[&port]))}
+            if SERVICES.contains_key(&port)
+                {window.set_label(&format!("NetPort - {}", SERVICES[&port]))}
 
         } else {
             status_label.set_label("");

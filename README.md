@@ -40,13 +40,15 @@ on *Linux* you should install:
 
 ## Terminal usage ⚡️
 
-NetPort GUI can be easily started with:
+NetPort can be also invoked from terminal with parameters:
 
-`netport.exe` on Windows
+| System  | Command                          |
+|---------|----------------------------------|
+| Windows | `NetPort.exe [args]`             |
+| macOS   | `open NetPort.app --args [args]` |
+| Linux   | `./NetPort.AppImage [args]`      |
 
-`./netport` on Linux/macOS
-
-It can also be invoked with parameters:
+### Arguments:
 
 `netport [address]` <u>Address</u> should have this format: **IP**:**PORT**  (e.g. `127.0.0.1:80`)
 
