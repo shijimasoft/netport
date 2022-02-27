@@ -2,9 +2,9 @@
 
 ![license](https://img.shields.io/badge/license-Apache%202-green)
 ![version](https://img.shields.io/badge/version-0.5-blueviolet)
-![win64](https://img.shields.io/badge/windows-release64-informational)
-![linux64](https://img.shields.io/badge/linux-release64-orange)
-![macos64](https://img.shields.io/badge/macOS-release64-magenta)
+![win64](https://img.shields.io/badge/windows-x86__64-informational)
+![linux64](https://img.shields.io/badge/linux-x86__64-orange)
+![macos64](https://img.shields.io/badge/macOS-x86__64-magenta)
 
 *A GUI address port checker written in Rust*
 
