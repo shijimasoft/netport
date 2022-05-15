@@ -62,8 +62,7 @@ fn main() {
     let mut address_label = Frame::new(145, 105, 130, 50, "");
 
     /* ARGS handling (Address and Timeout) */
-    if args.len() >= 2 && args[1].parse::<SocketAddr>().is_ok() 
-    {
+    if args.len() >= 2 && args[1].parse::<SocketAddr>().is_ok()  {
         let address: Vec<&str> = args[1].split(":").collect();
         let bytes: Vec<&str> = address[0].split(".").collect();
 
