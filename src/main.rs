@@ -8,6 +8,8 @@ use std::net::{SocketAddr, TcpStream};
 use std::time::Duration;
 use fltk::{app, prelude::*, window::Window, frame::Frame, enums::FrameType, input::Input, button::Button};
 
+
+// main function
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     let mut scan: bool = false;
