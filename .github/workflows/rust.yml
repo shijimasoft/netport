@@ -17,6 +17,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Install dependencies
-      run: sudo apt install -y cmake git g++
+      run: sudo apt install -y cmake git g++ libfltk-gl1.3
     - name: Build Linux
       run: cargo build --verbose
